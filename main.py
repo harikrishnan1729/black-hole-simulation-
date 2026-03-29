@@ -7,35 +7,45 @@ pygame.init()
 screen = pygame.display.set_mode((1200, 900))
 running = True
 stars = []
+to_remove = []
+
 color = (225,225,225)
 bx, by = 400, 300
 dragging = False
 
+dx, dy = 1, 1
+
+
 last_spawn_time = 0
 
 def createStar():
+    intensity = 1
+    global rotationIntensity
     x = r.randint(0, 1200)
     y = r.randint(0, 900)
-    vx = r.uniform(-0.1, 0.1)
-    vy = r.uniform(-0.1, 0.1)
-    stars.append([x, y, vx, vy, color])
+    vx = r.uniform(-1, 1) 
+    vy = r.uniform(-0.1, 0.1) 
+    
+    
+    stars.append([x, y, vx, vy, color, intensity])
 
-for i in range(100):
+
+
+for i in range(1):
     createStar()
 
 clock = pygame.time.Clock()
 while running:
     screen.fill((0,0,0))
-    # vx += 1
-    # vy += 1
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     
-    if(pygame.time.get_ticks()-last_spawn_time >= 3000):
-        last_spawn_time = pygame.time.get_ticks()
-        for i in range(2):
-            createStar()
+    # if(pygame.time.get_ticks()-last_spawn_time >= 10000):
+    #     last_spawn_time = pygame.time.get_ticks()
+    #     for i in range(2):
+    #         createStar()
 
     for star in stars:
         star[0] += star[2]   # x += vx
@@ -45,9 +55,36 @@ while running:
         pygame.draw.circle(screen, star[4], (int(star[0]), int(star[1])), r.randint(1, 3)) 
 
         distance = math.sqrt((star[0]-bx)**2 + (star[1]-by)**2)
-        print(distance)
-        if(distance<300):
-            pass
+        # print(distance)
+        
+        if(distance<400):
+            dx =  bx - star[0]
+            dy = by - star[1]
+
+            # dx and dy are the direction unit vectors from star to BH
+
+            dx /= distance
+            dy /= distance
+            dx *= star[5]
+            dy *= star[5]
+
+            star[2] += dx 
+            star[3] += dy
+            star[2]*=0.99
+            star[3]*=0.99 
+            
+            star[5] += 0.01
+            print(star[5])
+        
+
+        for star in stars:
+            if distance < 5:
+                to_remove.append(star)
+
+        for star in to_remove:
+            stars.remove(star)
+        
+
         if(event.type == pygame.MOUSEBUTTONDOWN):
             dragging = True
         if(event.type == pygame.MOUSEBUTTONUP):
@@ -62,7 +99,7 @@ while running:
 
 
     pygame.display.flip()
-    clock.tick(200)
+    clock.tick(100)
         
 
         

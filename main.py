@@ -7,7 +7,7 @@ pygame.init()
 screen = pygame.display.set_mode((1200, 900))
 running = True
 stars = []
-
+color = (225,225,225)
 bx, by = 400, 300
 dragging = False
 
@@ -18,10 +18,11 @@ def createStar():
     y = r.randint(0, 900)
     vx = r.uniform(-0.1, 0.1)
     vy = r.uniform(-0.1, 0.1)
-    stars.append([x, y, vx, vy])
+    stars.append([x, y, vx, vy, color])
 
-for i in range(40):
+for i in range(100):
     createStar()
+
 clock = pygame.time.Clock()
 while running:
     screen.fill((0,0,0))
@@ -41,8 +42,12 @@ while running:
         star[1] += star[3]   # y += vy
 
         
-        
-        pygame.draw.circle(screen, "#F7F2EB", (int(star[0]), int(star[1])), r.randint(1, 3)) 
+        pygame.draw.circle(screen, star[4], (int(star[0]), int(star[1])), r.randint(1, 3)) 
+
+        distance = math.sqrt((star[0]-bx)**2 + (star[1]-by)**2)
+        print(distance)
+        if(distance<300):
+            pass
         if(event.type == pygame.MOUSEBUTTONDOWN):
             dragging = True
         if(event.type == pygame.MOUSEBUTTONUP):
@@ -53,8 +58,6 @@ while running:
     pygame.draw.circle(screen, "#B37012", (bx, by), 25)
     if dragging:
         bx, by = pygame.mouse.get_pos()
-
-
 
 
 

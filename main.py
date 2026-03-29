@@ -31,7 +31,7 @@ def createStar():
 
 
 
-for i in range(1):
+for i in range(5):
     createStar()
 
 clock = pygame.time.Clock()
@@ -52,7 +52,7 @@ while running:
         star[1] += star[3]   # y += vy
 
         
-        pygame.draw.circle(screen, star[4], (int(star[0]), int(star[1])), r.randint(1, 3)) 
+        pygame.draw.circle(screen, star[4], (int(star[0]), int(star[1])), r.randint(1, 2)) 
 
         distance = math.sqrt((star[0]-bx)**2 + (star[1]-by)**2)
         # print(distance)
@@ -68,21 +68,21 @@ while running:
             dx *= star[5]
             dy *= star[5]
 
-            star[2] += dx 
-            star[3] += dy
-            star[2]*=0.99
-            star[3]*=0.99 
+            star[2] += dx * 0.05
+            star[3] += dy * 0.05
+            # star[2]*=0.99
+            # star[3]*=0.99 
             
-            star[5] += 0.01
-            print(star[5])
+            star[5] += 0.1
+            # print(star[5])
         
 
-        for star in stars:
-            if distance < 5:
-                to_remove.append(star)
+        if distance < 5:
+            to_remove.append(star)
+            print(star)
 
-        for star in to_remove:
-            stars.remove(star)
+        # for star in to_remove:
+        #     stars.remove(star)
         
 
         if(event.type == pygame.MOUSEBUTTONDOWN):
@@ -92,7 +92,7 @@ while running:
 
     
     # making the black hole 
-    pygame.draw.circle(screen, "#B37012", (bx, by), 25)
+    pygame.draw.circle(screen, "#2C2A27", (bx, by), 25)
     if dragging:
         bx, by = pygame.mouse.get_pos()
 

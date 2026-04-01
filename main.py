@@ -26,12 +26,15 @@ def createStar():
     vx = r.uniform(-1, 1) 
     vy = r.uniform(-0.1, 0.1) 
     
-    
     stars.append([x, y, vx, vy, color, intensity])
 
 
+def drawtail(x, y):
+    pygame.draw.circle(screen, (255, 255, 255), (x, y), 2)
+    print("okay")
 
-for i in range(5):
+
+for i in range(100):
     createStar()
 
 clock = pygame.time.Clock()
@@ -51,6 +54,8 @@ while running:
         star[0] += star[2]   # x += vx
         star[1] += star[3]   # y += vy
 
+        drawtail(star[0], star[1])
+
         
         pygame.draw.circle(screen, star[4], (int(star[0]), int(star[1])), r.randint(1, 2)) 
 
@@ -58,23 +63,27 @@ while running:
         # print(distance)
         
         if(distance<400):
-            dx =  bx - star[0]
-            dy = by - star[1]
+            if(distance<20):
+                print([star[0], star[1],star[2], star[3],star[4],star[5]])
+                stars.remove([star[0], star[1],star[2], star[3],star[4],star[5]])
+            else:
+                dx =  bx - star[0]
+                dy = by - star[1]
 
-            # dx and dy are the direction unit vectors from star to BH
+                # dx and dy are the direction unit vectors from star to BH
 
-            dx /= distance
-            dy /= distance
-            dx *= star[5]
-            dy *= star[5]
+                dx /= distance
+                dy /= distance
+                dx *= star[5]
+                dy *= star[5]
 
-            star[2] += dx * 0.05
-            star[3] += dy * 0.05
-            # star[2]*=0.99
-            # star[3]*=0.99 
-            
-            star[5] += 0.1
-            # print(star[5])
+                star[2] += dx * 0.05
+                star[3] += dy * 0.05
+                # star[2]*=0.99
+                # star[3]*=0.99 
+                                                                    #    stars.append([x, y, vx, vy, color, intensity])
+                star[5] += 0.1
+                # print(star[5])
         
 
         if distance < 5:

@@ -57,13 +57,18 @@ while running:
         drawtail(star[0], star[1])
 
         
-        pygame.draw.circle(screen, star[4], (int(star[0]), int(star[1])), r.randint(1, 2)) 
+        pygame.draw.circle(screen, star[4], (int(star[0]), int(star[1])), r.randint(1, 5)) 
+
 
         distance = math.sqrt((star[0]-bx)**2 + (star[1]-by)**2)
         # print(distance)
         
         if(distance<400):
-            if(distance<20):
+            if(distance<100):
+                star[4] = "#FCB761"
+            else:
+                star[4] = (255, 225, 225)   
+            if(distance<25):
                 print([star[0], star[1],star[2], star[3],star[4],star[5]])
                 stars.remove([star[0], star[1],star[2], star[3],star[4],star[5]])
             else:
@@ -79,8 +84,8 @@ while running:
 
                 star[2] += dx * 0.05
                 star[3] += dy * 0.05
-                # star[2]*=0.99
-                # star[3]*=0.99 
+                star[2]*=0.99
+                star[3]*=0.99 
                                                                     #    stars.append([x, y, vx, vy, color, intensity])
                 star[5] += 0.1
                 # print(star[5])
@@ -102,6 +107,9 @@ while running:
     
     # making the black hole 
     pygame.draw.circle(screen, "#2C2A27", (bx, by), 25)
+    pygame.draw.ellipse(screen, "#FCB761", (bx-35, by-35, 70, 70), 2)
+    pygame.draw.ellipse(screen, "#FCB761", (bx-75, by-75, 150, 150), 12)
+
     if dragging:
         bx, by = pygame.mouse.get_pos()
 
